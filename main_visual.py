@@ -62,7 +62,7 @@ parser.add_argument('--use_ddp', default=False, action='store_true',
                          'N processes per node, which has N GPUs. This is the '
                          'fastest way to use PyTorch for either single node or '
                          'multi node data parallel training')
-parser.add_argument('--gpu', default=1, type=int, help='GPU id to use.')
+parser.add_argument('--gpu', default=None, type=int, help='GPU id to use.')
 
 # training parameter
 parser.add_argument('--epochs', default=10, type=int, metavar='N',
@@ -170,7 +170,7 @@ def main_worker(gpu, ngpus_per_node, args):
     # Loading without the fc layer
     sota_backbone = timm.create_model(args.model_name, pretrained=True, num_classes=1000, )
     # state_dict = torch.load(args.backbone_ckpt, map_location='cpu')
-    sota_backbone.load_state_dict(state_dict)
+    # sota_backbone.load_state_dict(state_dict)
 
     sota_backbone.eval()
     if args.hidden_size is None:
@@ -322,8 +322,11 @@ def train(train_loader, model, criterion, optimizer, epoch, device, args):
 
         loss_k = criterion(x_1, recons_1)
         loss_4k = criterion(x_3, recons_3)
-        loss_auxk = normalized_mse(recons_aux_1, x_1 - recons_1.detach() + model.pre_bias.detach(),
-                                    criterion).nan_to_num(0)
+        # loss_auxk = normalized_mse(recons_aux_1, x_1 - recons_1.detach() + model.pre_bias.detach(),
+        #                             criterion).nan_to_num(0)
+        ## for multi-gpu
+        loss_auxk = normalized_mse(recons_aux_1, x_1 - recons_1.detach() + model.module.pre_bias.detach(),
+                                criterion).nan_to_num(0)
 
         if args.use_CL:
             x_2, latents_pre_act_2, latents_k_2, recons_2, recons_aux_2 = model(images)

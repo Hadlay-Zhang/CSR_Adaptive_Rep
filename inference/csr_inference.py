@@ -38,7 +38,7 @@ parser.add_argument('--auxk', default=512, type=int,help='the number of auxk')
 parser.add_argument('--auxk_coef', default=1/32, type=float,help='auxk_coef')
 parser.add_argument('--dead_threshold', default=10, type=int,help='dead_threshold')
 parser.add_argument('--hidden-size', default=None, type=int,help='the size of hidden layer')
-parser.add_argument('--csr-ckpt', default=None,type=str,help = 'ckpt for CSR model')
+parser.add_argument('--csr_ckpt', default=None,type=str,help = 'ckpt for CSR model')
 
 args = parser.parse_args()
 
