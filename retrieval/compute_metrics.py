@@ -6,13 +6,14 @@ from argparse import ArgumentParser
 
 parser=ArgumentParser()
 parser.add_argument('--topk', default=8, type=int,help='the number of topk')
+parser.add_argument('--prec', default='float32', type=str,help='precision of the index')
 args = parser.parse_args()
 topk = args.topk
 root = f"./CSR_topk_{topk}/"
 dataset = 'V1'
 index_type = 'exactl2' # ['exactl2', 'hnsw_8', 'hnsw_32']
 EVAL_CONFIG = 'vanilla' # ['vanilla', 'reranking', 'funnel']
-k = 1 # shortlist length, default set to max supported by FAISS
+k = 2048 # shortlist length, default set to max supported by FAISS
 def compute_mAP_recall_at_k(val_classes, db_classes, neighbors, k):
     """
     Computes the MAP@k (default value of k=R) on neighbors with val set by seeing if nearest neighbor
@@ -56,7 +57,7 @@ start = time.time()
 # Load neighbors array and compute metrics
 
 neighbors_path = root + "neighbors/" +index_type + "_" \
-                 + f"{k}shortlist_" + dataset + ".csv"
+                 + f"{k}shortlist_" + dataset + "_" + args.prec + ".csv"
 
 neighbors = pd.read_csv(neighbors_path, header=None).to_numpy()
 

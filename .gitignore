@@ -1,0 +1,5 @@
+ckpt/
+ffcv/
+imagenet/
+retrieval/CSR_topk_*/
+retrieval/pretrained_emb/
