@@ -8,7 +8,7 @@ huggingface-cli download "HadlayZ/ImageNet-1K-ffcv" --local-dir data_imagenet_ff
 ```
 to download from HF repo, and then merge multiple chunks by:
 ```Shell
-cat train_chunk_* > train_complete.ffcv
+cat train_chunk_* > train_500_0.50_90.ffcv
 ```
 
 and make sure results from:

@@ -3,3 +3,6 @@ ffcv/
 imagenet/
 retrieval/CSR_topk_*/
 retrieval/pretrained_emb/
+data_imagenet_ffcv/.gitattributes
+data_imagenet_ffcv/train_*
+data_imagenet_ffcv/val_*
