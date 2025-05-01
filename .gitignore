@@ -1,5 +1,7 @@
-ckpt/
+ckpt*/
 ffcv/
+imgenet1k_train_emb.npy
+__pycache__/
 imagenet/
 retrieval/CSR_topk_*/
 retrieval/pretrained_emb/

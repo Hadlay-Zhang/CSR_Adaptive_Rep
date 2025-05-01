@@ -99,7 +99,7 @@ parser.add_argument('--auxk_coef', default=1/32, type=float, dest='auxk_coef',
                     help='auxk_coef')
 parser.add_argument('--dead_threshold', default=30, type=int, dest='dead_threshold',
                     help='dead_threshold')
-parser.add_argument('--hidden-size', default=None, type=int, dest='hidden_size',
+parser.add_argument('--hidden_size', default=None, type=int, dest='hidden_size',
                     help='the size of hidden layer')
 
 

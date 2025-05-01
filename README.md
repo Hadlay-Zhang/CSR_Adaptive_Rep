@@ -119,15 +119,6 @@ python faiss_nn.py --topk 8
 python compute_metrics.py --topk 8
 ```
 
-### TL;DR
-```bash
-python pretrained_inference.py --train_data_ffcv ../data_imagenet_ffcv/train_500_0.50_90.ffcv --eval_data_ffcv ../data_imagenet_ffcv/val_500_0.50_90.ffcv --model_name resnet50d.ra4_e3600_r224_in1k
-
-python main_visual.py --use_ddp --batch-size 4096 --lr 4e-4 --use_CL --topk 8 --auxk 512 --hidden-size 8192
-
-python csr_inference.py --model_name resnet50d.ra4_e3600_r224_in1k --topk 8 --hidden-size 8192 --csr_ckpt ../ckpt/CSR_topk_8/checkpoint_4.pth
-```
-
 ## Reproduce MultiModal Exp
 
 ### Train CSR on CC3M and eval on MS COCO and Flickr30K (Zero-Shot)

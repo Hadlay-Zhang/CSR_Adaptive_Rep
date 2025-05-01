@@ -103,7 +103,7 @@ if num_gpus_to_use > 0:
 
     co = faiss.GpuMultipleClonerOptions()
     co.shard = True       # shard index across GPUs (good for IndexFlat)
-    co.useFloat16 = True  # float16 to potentially halve memory usage & speed up
+    co.useFloat16 = False  # float16 to potentially halve memory usage & speed up
     gpu_list = list(range(num_gpus_to_use))
     index = faiss.index_cpu_to_all_gpus(cpu_index)
     print(f"GPU index clone successful. Clone time= {time.time() - start_clone:.3f} sec")
@@ -134,9 +134,8 @@ if end_search > 0:
 else:
     print("Search time was negligible (throughput calculation skipped).")
 
-prec = 'float16' if co.useFloat16 else 'float32'
 start_write = time.time()
-nn_filename = f"{index_type}_{k}shortlist_{dataset}_{prec}.csv"
+nn_filename = f"{index_type}_{k}shortlist_{dataset}.csv"
 nn_filepath = path.join(neighbors_out_dir, nn_filename)
 print(f"Writing neighbor indices to: {nn_filepath}")
 pd.DataFrame(I).to_csv(nn_filepath, header=None, index=None)

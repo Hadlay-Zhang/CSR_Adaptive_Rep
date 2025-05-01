@@ -34,8 +34,10 @@ cat train_chunk_* > train_500_0.50_90.ffcv
 cd ../
 ```
 
-## 3. Get Pre-trained ImageNet1k Embeddings
-For training and evaluation simplicity, we precompute image embeddings using models from [Timm](https://github.com/huggingface/pytorch-image-models). By default, [resnet50d.ra4_e3600_r224_in1k](https://huggingface.co/timm/resnet50d.ra4_e3600_r224_in1k) is adopted as pre-trained visual backbone. To extract pre-trained embeddings, run:
+## 3. Get Pre-trained Embeddings
+For training and evaluation simplicity, we precompute image embeddings using models from [Timm](https://github.com/huggingface/pytorch-image-models). By default, [resnet50d.ra4_e3600_r224_in1k](https://huggingface.co/timm/resnet50d.ra4_e3600_r224_in1k) is adopted as pre-trained visual backbone. We also provide embeds extracted by **FF2048 backbones** (same backbone weights with MRL), and embeds by **SoTA backbones** at [Dataset Link](https://huggingface.co/datasets/W1nd-navigator/CSR-precompute-embeds).
+
+To extract pre-trained resnet-50 embeddings, run:
 ```Bash
 cd inference
 python pretrained_inference.py --train_data_ffcv ../data_imagenet_ffcv/train_500_0.50_90.ffcv --eval_data_ffcv ../data_imagenet_ffcv/val_500_0.50_90.ffcv --model_name resnet50d.ra4_e3600_r224_in1k
@@ -51,7 +53,12 @@ python stack_emb.py
 python main_visual.py --use_ddp --batch-size 4096 --lr 4e-4 --use_CL --topk 8 --auxk 512 --hidden-size 8192
 ```
 
-## 5. KNN Evaluation
+## 5. Get CSR Embeddings for Evaluation
+```Bash
+python csr_inference.py --model_name resnet50d.ra4_e3600_r224_in1k --topk 8 --hidden-size 512 --csr_ckpt ../ckpt/CSR_topk_8/checkpoint_9.pth
+```
+
+## 6. KNN Evaluation
 [FAISS](https://github.com/facebookresearch/faiss) supports GPU-usage for acceleration. 
 (Note: At least 40GB GPU memory needed to use GPU acceleration)
 ```Bash
