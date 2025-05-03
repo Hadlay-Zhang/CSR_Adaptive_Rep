@@ -235,7 +235,13 @@ def main_worker(gpu, ngpus_per_node, args):
             num_workers=args.workers, pin_memory=True, )
 
     else:
-        train_dataset = CustomDataset(np.load(args.pretrained_emb))
+        loaded_object = np.load(args.pretrained_emb)
+        if isinstance(loaded_object, np.lib.npyio.NpzFile): # npz
+            input_data = loaded_object['data']
+            loaded_object.close()
+        else: # npy
+            input_data = loaded_object
+        train_dataset = CustomDataset(input_data)
         train_loader = DataLoader(train_dataset,batch_size=args.batch_size, shuffle=True,
             num_workers=args.workers, pin_memory=True)
 
