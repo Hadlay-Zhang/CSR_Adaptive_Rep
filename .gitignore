@@ -9,3 +9,4 @@ data_imagenet_ffcv/.gitattributes
 data_imagenet_ffcv/train_*
 data_imagenet_ffcv/val_*
 pretrained_embed/
+pretrained_backbone
