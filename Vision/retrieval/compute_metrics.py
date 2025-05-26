@@ -45,10 +45,10 @@ def compute_mAP_recall_at_k(val_classes, db_classes, neighbors, k):
 # Load database and query set for nested models
 
 # Database: 1.2M x 1 for imagenet1k
-db_labels = np.load(root + f"V1 train topk{topk}-y.npy")
+db_labels = np.load(root + f"V1_train_topk_{topk}-y.npy")
 
 # Query set: 50K x 1 for imagenet1k
-query_labels = np.load(root + f"V1 eval topk{topk}-y.npy")
+query_labels = np.load(root + f"V1_val_topk_{topk}-y.npy")
 
 
 start = time.time()

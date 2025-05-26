@@ -322,8 +322,8 @@ def train(train_loader, model, criterion, optimizer, epoch, device, args):
 
         loss_k = criterion(x_1, recons_1)
         loss_4k = criterion(x_3, recons_3)
-        loss_auxk = normalized_mse(recons_aux_1, x_1 - recons_1.detach() + model.pre_bias.detach(),
-                                    criterion).nan_to_num(0)
+        loss_auxk = normalized_mse(recons_aux_1, x_1 - recons_1.detach() + getattr(model, 'module', model).pre_bias.detach(),
+                                    criterion).nan_to_num(0) # for both DDP and non-DDP
 
         if args.use_CL:
             x_2, latents_pre_act_2, latents_k_2, recons_2, recons_aux_2 = model(images)

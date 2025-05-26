@@ -159,7 +159,10 @@ class CSR(nn.Module):
 
 class CustomDataset(Dataset):
     def __init__(self,train_data):
-        self.train_data = train_data['data']
+        if isinstance(train_data, dict):
+            self.train_data = train_data['data']
+        else:
+            self.train_data = train_data
         # self.labels = train_data['labels']
         self.N = self.train_data.shape[0]
 
