@@ -64,6 +64,7 @@ def main():
     parser.add_argument('--dataset', required=True, choices=DATASET_CONFIG.keys(), help="Dataset to process")
     parser.add_argument('--language', default=None, help="Language (required for mtop_intent)")
     parser.add_argument('--split', default=None, help="Data split: train/test/validation (default: all splits)")
+    parser.add_argument('-b', '--batch_size', type=int, default=128, help="Batch size for processing")
 
     args = parser.parse_args()
     config = DATASET_CONFIG[args.dataset]
@@ -82,7 +83,7 @@ def main():
                     print(f"Warning: File not found {file_path}, skipping.")
                     continue
                 print(f"Processing {args.dataset} | language={language}, split={split}")
-                process_file(file_path, embed_path, model, config["instruction"])
+                process_file(file_path, embed_path, model, config["instruction"], args.batch_size)
     else:
         splits = [args.split] if args.split else config["splits"]
         for split in splits:
@@ -92,7 +93,7 @@ def main():
                 print(f"Warning: File not found {file_path}, skipping.")
                 continue
             print(f"Processing {args.dataset} | split={split}")
-            process_file(file_path, embed_path, model, config["instruction"])
+            process_file(file_path, embed_path, model, config["instruction"], args.batch_size)
 
 if __name__ == "__main__":
     main()
