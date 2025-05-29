@@ -47,6 +47,8 @@ def process_biorxiv(file_path, embed_path, instruction, batch_size):
             text_embeddings_buffer.append(emb.cpu().numpy())
             text_label_buffer.extend(labels)
 
+    # Create output directory if it doesn't exist
+    os.makedirs(os.path.dirname(embed_path), exist_ok=True)
     np.savez(embed_path, data=np.vstack(text_embeddings_buffer), label=np.array(text_label_buffer))
 
 def process_twentynewsgroups(embed_path, instruction, batch_size, split):
@@ -71,7 +73,10 @@ def process_twentynewsgroups(embed_path, instruction, batch_size, split):
         text_embeddings_buffer.append(emb.cpu().numpy())
         text_label_buffer.extend(batch_labels)
 
-    np.savez(f"{embed_path}_{split}.npz", data=np.vstack(text_embeddings_buffer), label=np.array(text_label_buffer))
+    # Create output directory if it doesn't exist
+    output_file = f"{embed_path}_{split}.npz"
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    np.savez(output_file, data=np.vstack(text_embeddings_buffer), label=np.array(text_label_buffer))
 
 if __name__ == "__main__":
     args = parse_args()
@@ -111,7 +116,7 @@ if __name__ == "__main__":
     if args.dataset == "twentynewsgroups" and args.split not in ["all", "train", "test"]:
         raise ValueError("twentynewsgroups only supports all, train and test splits")
 
-    if args.dataset == "biorxiv-s2s" or args.dataset == 'biorxiv-p2p' and args.split not in ["test"]:
+    if (args.dataset == "biorxiv-s2s" or args.dataset == 'biorxiv-p2p') and args.split not in ["test"]:
         raise ValueError("biorxiv-datasets only supports test splits")
 
     input_file = os.path.join(dataset_cfg["dir"], dataset_cfg["file_template"].format(split=args.split))

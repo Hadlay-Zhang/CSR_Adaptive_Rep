@@ -59,7 +59,7 @@ def dump_feature_vector_array_lists(config_name, output_path):
 def generate_retrieval_data(model, emb_path, output_path, args, mode):
     model.eval()
     
-    dump_path = os.path.join(output_path, f'SOTA_CSR_' + 'topk_' + str(args.topk))
+    dump_path = os.path.join(output_path, f'{args.task_name}_CSR_' + 'topk_' + str(args.topk))
     
     if not os.path.exists(dump_path):
         os.makedirs(dump_path)
@@ -88,7 +88,7 @@ def generate_retrieval_data(model, emb_path, output_path, args, mode):
     combined_data = np.concatenate(all_data, axis=0)
     combined_label = np.concatenate(all_labels, axis=0)
     
-    np.savez(dump_path + f"_{mode}.npz", data=combined_data, label=combined_label)
+    np.savez(os.path.join(dump_path, f"{mode}.npz"), data=combined_data, label=combined_label)
     # np.savez(dump_path + f"_{mode}.npz", data=combined_data)
 
 def generate_pretrained_embed(model, data_loader, emb_path,):
