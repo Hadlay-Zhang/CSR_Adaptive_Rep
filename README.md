@@ -10,11 +10,11 @@ In this paper, we show that *sparse coding* offers a compelling alternative for 
 
 ## 🧬 Source Repository
 
-This project is built on top of prior research and infrastructure from the Y-research team.
+This project is built on top of prior research and infrastructure from the Y Research team.
 
 👉 [Y Research](https://github.com/Y-Research-SBU/CSR)
 
-Please refer to the Y-research repo for more details.
+Please refer to the Y Research repo for more details.
 
 ## &#x1F680; &#x1F680; News
 - 2025.05.25 **Major Update**. We have thoroughly reorganized our repository with the following changes: 🎉🎉
@@ -383,14 +383,11 @@ python main_multimodal.py eval \
 ### Citing this paper
 If you find this work useful, please cite the accompanying paper:
 ```
-@misc{wen2025matryoshkarevisitingsparsecoding,
-      title={Beyond Matryoshka: Revisiting Sparse Coding for Adaptive Representation}, 
-      author={Tiansheng Wen and Yifei Wang and Zequn Zeng and Zhong Peng and Yudi Su and Xinyang Liu and Bo Chen and Hongwei Liu and Stefanie Jegelka and Chenyu You},
-      year={2025},
-      eprint={2503.01776},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2503.01776}, 
+@inproceedings{wen2025matryoshkarevisitingsparsecoding,
+    title={Beyond Matryoshka: Revisiting Sparse Coding for Adaptive Representation},
+    author={Tiansheng Wen and Yifei Wang and Zequn Zeng and Zhong Peng and Yudi Su and Xinyang Liu and Bo Chen and Hongwei Liu and Stefanie Jegelka and Chenyu You},
+    booktitle={International Conference on Machine Learning},
+    year={2025}
 }
 ```
 ### Acknowledgements
