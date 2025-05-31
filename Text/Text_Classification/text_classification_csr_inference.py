@@ -26,7 +26,6 @@ parser.add_argument('--retrieval_array_path', default='./retrieval',
                     help='path to save database and query arrays for retrieval', type=str)
 parser.add_argument('--workers', type=int, default=16, help='num workers for dataloader')
 parser.add_argument('--batch_size', default=256,type=int,help='batch size')
-parser.add_argument('--embed_save_path', default='../retrieval/pretrained_emb', help='path to save database and query arrays for retrieval', type=str)
 parser.add_argument('--embed_dim', default=4096 ,help='embedding_dim')
 
 # CSR args
@@ -61,4 +60,4 @@ print("Inferencing Training Dataset")
 generate_retrieval_data(model, args.train_emb_path, args.retrieval_array_path, args, "train")
 
 print("Inferencing Validation Dataset")
-generate_retrieval_data(model, args.val_emb_path, args.retrieval_array_path, args, "val")
+generate_retrieval_data(model, args.val_emb_path, args.retrieval_array_path, args, "test")

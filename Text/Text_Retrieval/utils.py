@@ -59,7 +59,7 @@ def dump_feature_vector_array_lists(config_name, output_path):
 def generate_retrieval_data(model, emb_path, output_path, args, mode):
     model.eval()
     
-    dump_path = os.path.join(output_path, f'SOTA_CSR_' + 'topk_' + str(args.topk))
+    dump_path = os.path.join(output_path, f'{args.task_name}_CSR_' + 'topk_' + str(args.topk))
     
     if not os.path.exists(dump_path):
         os.makedirs(dump_path)
@@ -69,27 +69,26 @@ def generate_retrieval_data(model, emb_path, output_path, args, mode):
     fwd_pass_x_list = []
     fwd_pass_y_list = []
     
-    chunk_files = sorted(glob.glob(os.path.join(emb_path, '*.npz')))
-    if not chunk_files:
-        raise RuntimeError(f"No .npz files found in {emb_path}")
+    if not os.path.exists(emb_path):
+        raise RuntimeError(f"File not found: {emb_path}")
+    if not emb_path.endswith('.npz'):
+        raise RuntimeError(f"Expected .npz file, got: {emb_path}")
     
     with torch.no_grad():
         with autocast():
-            all_data = []
-            all_labels = []
-            for chunk_path in tqdm(chunk_files):
-                img_emb = torch.from_numpy(np.load(chunk_path)['data'])
-                target = torch.from_numpy(np.load(chunk_path)['label'])
-                _, _, feature, _, _ = model(img_emb.cuda())
-                # append_feature_vector_to_list(feature, target.cuda())
-                all_data.append(feature.cpu())
-                all_labels.append(target)
+            data = np.load(emb_path)
+            img_emb = torch.from_numpy(data['data'])
+            
+            if 'label' in data:
+                target = torch.from_numpy(data['label'])
+            else:
+                target = torch.zeros(img_emb.shape[0], dtype=torch.long)
+            
+            _, _, feature, _, _ = model(img_emb.cuda())
+            combined_data = feature.cpu().numpy()
+            combined_label = target.numpy()
     
-    combined_data = np.concatenate(all_data, axis=0)
-    combined_label = np.concatenate(all_labels, axis=0)
-    
-    np.savez(dump_path + f"_{mode}.npz", data=combined_data, label=combined_label)
-    # np.savez(dump_path + f"_{mode}.npz", data=combined_data)
+    np.savez(os.path.join(dump_path, f"{mode}.npz"), data=combined_data, label=combined_label)
 
 def generate_pretrained_embed(model, data_loader, emb_path,):
 	"""

@@ -11,7 +11,7 @@ from pathlib import Path
 import glob
 
 '''
-Retrieval utility methods.
+Utility methods.
 '''
 activation = {}
 fwd_pass_x_list = []
@@ -69,24 +69,25 @@ def generate_retrieval_data(model, emb_path, output_path, args, mode):
     fwd_pass_x_list = []
     fwd_pass_y_list = []
     
-    chunk_files = sorted(glob.glob(os.path.join(emb_path, '*.npz')))
-    if not chunk_files:
-        raise RuntimeError(f"No .npz files found in {emb_path}")
+    if mode == "train":
+        target_file = "train.npz"
+    elif mode == "test":
+        target_file = "test.npz"
+    else:
+        raise ValueError(f"Unsupported mode: {mode}")
+    
+    chunk_file = os.path.join(emb_path, target_file)
+    if not os.path.exists(chunk_file):
+        raise RuntimeError(f"File not found: {chunk_file}")
     
     with torch.no_grad():
         with autocast():
-            all_data = []
-            all_labels = []
-            for chunk_path in tqdm(chunk_files):
-                img_emb = torch.from_numpy(np.load(chunk_path)['data'])
-                target = torch.from_numpy(np.load(chunk_path)['label'])
-                _, _, feature, _, _ = model(img_emb.cuda())
-                # append_feature_vector_to_list(feature, target.cuda())
-                all_data.append(feature.cpu())
-                all_labels.append(target)
-    
-    combined_data = np.concatenate(all_data, axis=0)
-    combined_label = np.concatenate(all_labels, axis=0)
+            img_emb = torch.from_numpy(np.load(chunk_file)['data'])
+            target = torch.from_numpy(np.load(chunk_file)['label'])
+            _, _, feature, _, _ = model(img_emb.cuda())
+            
+            combined_data = feature.cpu().numpy()
+            combined_label = target.numpy()
     
     np.savez(os.path.join(dump_path, f"{mode}.npz"), data=combined_data, label=combined_label)
     # np.savez(dump_path + f"_{mode}.npz", data=combined_data)

@@ -11,7 +11,7 @@ from pathlib import Path
 import glob
 
 '''
-Retrieval utility methods.
+Utility methods.
 '''
 activation = {}
 fwd_pass_x_list = []

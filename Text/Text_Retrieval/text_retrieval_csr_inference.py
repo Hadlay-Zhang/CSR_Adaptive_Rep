@@ -17,9 +17,9 @@ from collections import OrderedDict
 parser=ArgumentParser()
 
 # model args
-parser.add_argument('--corpus_emb_path', default='../retrieval/pretrained_emb/train_emb',
+parser.add_argument('--corpus_emb_path', default='./nfcorpus/train.npz',
                     help='path to pre-trained training embeddings (default: imagenet)')
-parser.add_argument('--queries_emb_path', default='../retrieval/pretrained_emb/val_emb',
+parser.add_argument('--queries_emb_path', default='./nfcorpus/val.npz',
                     help='path to pre-trained evaluation embeddings (default: imagenet)')
 parser.add_argument('--retrieval_array_path', default='./retrieval',
                     help='path to save database and query arrays for retrieval', type=str)
@@ -35,6 +35,7 @@ parser.add_argument('--auxk_coef', default=1/32, type=float,help='auxk_coef')
 parser.add_argument('--dead_threshold', default=10, type=int,help='dead_threshold')
 parser.add_argument('--hidden-size', default=None, type=int,help='the size of hidden layer')
 parser.add_argument('--csr_ckpt', default=None,type=str,help = 'ckpt for CSR model')
+parser.add_argument('--task_name', default="fiqa", type=str, help="Text task to test on.")
 
 args = parser.parse_args()
 

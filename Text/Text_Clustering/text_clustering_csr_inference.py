@@ -18,7 +18,7 @@ parser=ArgumentParser()
 
 # model args
 parser.add_argument('--test_emb_path', default='./biorxiv-clustering-p2p',
-                    help='path to pre-trained test embeddings (default: imagenet)')
+                    help='path to pre-trained test embeddings (default: biorxiv-clustering-p2p)')
 
 parser.add_argument('--retrieval_array_path', default='./retrieval',
                     help='path to save database and query arrays for retrieval', type=str)
